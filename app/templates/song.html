@@ -1,0 +1,33 @@
+<html>
+    <head>
+        <title>Song</title>
+    </head>
+    <body>
+        <h1> {{ theTitle }} in your songs</h1>
+        <div>
+          <ul>
+            {% for key, value in song.items() %}
+              <li>{{ key }}: {{ value }}</li>
+            {% endfor %}
+          </ul>
+
+      </div>
+      <div>
+        <h2>Update the Song:</h2>
+     ```<form method="post" action="/update/{{  song._id }}">
+          <label for="updates">Change the title:</label>
+          <input type="text" name="song_title" value="{{song.title}}"><br>
+          <label for="updates">Change the artist:</label>
+          <input type="text" name="song_artist" value="{{song.artist}}"><br>
+          <label for="updates">Chage the comment:</label>
+          <input type="text" name="song_comment" value="{{song.comment}}"><br>
+          <input type="submit" value="Submit">
+        </form>
+      </div> 
+    <a href='/remove/{{ song._id  }}'>REMOVE SONG</a><br>
+    <a href='/'>Go Back</a>
+
+
+      
+    </body>
+</html>

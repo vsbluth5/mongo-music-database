@@ -1,0 +1,19 @@
+<html>
+    <head>
+        <title>Artist's Songs</title>
+    </head>
+    <body>
+        <h1>Here are the Songs by {{theArtist}} in your songs</h1>
+      <div>
+        <ul>
+          {% for record in records %}
+            <li>{{ record.title }} </li>
+          {% endfor %}
+      </ul>
+    </div>
+    <a href='/'>Go Back</a>
+
+
+      
+    </body>
+</html>

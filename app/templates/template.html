@@ -1,0 +1,24 @@
+<html>
+    <head>
+        <title>Some HTML Page</title>
+    </head>
+    <body>
+        {% for key, value in song %}
+              <li>{{ key }}: {{ value }} </li>
+            {% endfor %}
+        </ul>
+     <form method="post" action="/update">
+          <label for="updates">Change the title:</label>
+          <input type="text" name="song_title" value="{{song.title}}">
+          <label for="updates">Change the artist:</label>
+          <input type="text" name="song_artist" value="{{song.artist}}">
+          <label for="updates">Chage the comment:</label>
+          <input type="text" name="song_comment" value="{{song.comment}}">
+          <input type="submit" value="Submit">
+        </form>
+      </div>     
+
+
+      
+    </body>
+</html>
