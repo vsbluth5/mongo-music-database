@@ -1,33 +1,27 @@
-<html>
-    <head>
-        <title>Song</title>
-    </head>
-    <body>
-        <h1> {{ theTitle }} in your songs</h1>
-        <div>
-          <ul>
-            {% for key, value in song.items() %}
-              <li>{{ key }}: {{ value }}</li>
-            {% endfor %}
-          </ul>
+{% extends "template.html" %}
+{% block title1 %}{{ theTitle }} in your songs{% endblock %}
 
-      </div>
-      <div>
-        <h2>Update the Song:</h2>
-     ```<form method="post" action="/update/{{  song._id }}">
-          <label for="updates">Change the title:</label>
-          <input type="text" name="song_title" value="{{song.title}}"><br>
-          <label for="updates">Change the artist:</label>
-          <input type="text" name="song_artist" value="{{song.artist}}"><br>
-          <label for="updates">Chage the comment:</label>
-          <input type="text" name="song_comment" value="{{song.comment}}"><br>
-          <input type="submit" value="Submit">
-        </form>
-      </div> 
+{% block listcontent %}
+    <h4>Song Information</h4>
+    {% for key, value in song.items() %}
+        <li>{{ key }}: {{ value }}</li>
+    {% endfor %}
+    </ul>
+{% endblock %}
+{% block options %}
+    <h4>Make Changes</h4>
+    <!-- Submission Form -->
+	<form method="post" action="/update/{{ song._id  }}">
+		<p><label for="updates">Change Title:</label>
+		<input type="text" name="song_title" value="{{song.title}}"></p>
+		<p><label for="updates">Change Artist:</label>
+		<input type="text" name="song_artist" value="{{song.artist}}"></p>
+		<p><label for="updates">Change Comment:</label>
+		<input type="text" name="song_comment" value="{{song.comment}}"></p>
+		<input type="submit" value="Submit">
+    </form>
+{% endblock %}
+ {% block content %}
     <a href='/remove/{{ song._id  }}'>REMOVE SONG</a><br>
     <a href='/'>Go Back</a>
-
-
-      
-    </body>
-</html>
+    {% endblock %}

@@ -1,19 +1,18 @@
-<html>
-    <head>
-        <title>Artist's Songs</title>
-    </head>
-    <body>
-        <h1>Here are the Songs by {{theArtist}} in your songs</h1>
-      <div>
+cl{% extends "template.html" %}
+{% block title1 %}Songs by {{theArtist}}{% endblock %}
+
+{% block listcontent %}
+    <h4>Songs</h4>
         <ul>
           {% for record in records %}
             <li>{{ record.title }} </li>
           {% endfor %}
       </ul>
-    </div>
+{% endblock %}
+
+{% block options %}
+{% endblock %}
+
+ {% block content %}
     <a href='/'>Go Back</a>
-
-
-      
-    </body>
-</html>
+    {% endblock %}
