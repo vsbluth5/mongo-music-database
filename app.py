@@ -3,8 +3,7 @@
 
 import os
 from flask import Flask
-from flask import render_template
-from flask import request, redirect
+from flask import render_template, request, redirect, session, url_for
 from flask_pymongo import PyMongo
 
 from bson.objectid import ObjectId
@@ -16,13 +15,43 @@ app = Flask(__name__)
 app.config['MONGO_DBNAME'] = 'firstMusic' 
 
 # URI of database for read/write provileges
-app.config['MONGO_URI'] = 'mongodb+srv://person1:pVoEoiSZnPw0omb8@cluster0-vmzkd.mongodb.net/firstMusic?retryWrites=true&w=majority' 
+app.config['MONGO_URI'] = 'mongodb+srv://person1:pVoEoiSZnPw0omb8@cluster0-vmzkd.mongodb.net/firstMusic?retryWrites=true&w=majority'
+# app.config['MONGO_URI'] = 'mongodb+srv://admin2:uU7p3UTei4BKNneS@cluster0-vmzkd.mongodb.net/firstMusic?retryWrites=true&w=majority'
 
-# URI of database for read-only provileges
-#app.config['MONGO_URI'] = 'mongodb+srv://person_read:vRR3w93lXlbJqMh2@cluster0-vmzkd.mongodb.net/firstMusic?retryWrites=true&w=majority' 
+# This is for the session
+#  If using Python 3, use a string
+app.secret_key = '_5#y2L"F4Q8z\n\xec]/'
 
 mongo = PyMongo(app)
 
+# LOGIN
+@app.route('/login', methods=['POST'])
+def login():
+    users = mongo.db.users
+    login_user = users.find_one({'name' : request.form['username']})
+
+    if login_user:
+        if request.form['password'] == login_user['password']:
+            session['username'] = request.form['username']
+            return redirect(url_for('display_main'))
+        return redirect(url_for('gologin'))
+    return render_template('signup.html') 
+
+# SIGN UPM
+@app.route('/signup', methods=['POST', 'GET'])
+def signup():
+    if request.method == 'POST':
+        users = mongo.db.users
+        existing_user = users.find_one({'name' : request.form['username']})
+
+        if existing_user is None:
+            users.insert({'name' : request.form['username'], 'password' : request.form['password']})
+            session['username'] = request.form['username']
+            return redirect(url_for('display_main'))
+
+        return 'That username already exists! Try logging in.'
+
+    return render_template('signup.html')
 
 # INDEX
 @app.route('/')
@@ -32,6 +61,19 @@ def index():
     songsDB = collection.find({})
     print(collection.count_documents({}))    #how to get count of documents (records)
     return render_template("index.html", records=songsDB)
+
+# GO TO LOGIN
+@app.route('/gologin')
+def go_to_login():
+    return render_template('login.html')
+
+# DISPLAY MAINPAGE
+@app.route('/mainpage')
+def display_main():
+    collection = mongo.db.music
+    songsDB = collection.find({})
+    return render_template("mainpage.html", records=songsDB)
+
 
 # ADD SONGS
 @app.route('/add')
@@ -58,7 +100,7 @@ def add():
     collection.insert_many(mylist)
     #songsDB = collection.find({})
     print(collection.count_documents({}))    #how to get count of documents (records)
-    return redirect('/')
+    return redirect(url_for('display_main'))
 
 #remove all
 @app.route('/remove')
@@ -68,7 +110,7 @@ def emptyDatabase():
     songs.remove({})
     #songsDB = songs.find({})
     print(songs.count_documents({}))    #how to get count of documents (records)
-    return redirect('/')
+    return redirect(url_for('display_main'))
 
 # ADVANCED: A FORM TO COLLECT USER-SUBMITTED SONGS
 #14. Create a new HTML template that is a form for a user to submit their favorite songs to the list. 
@@ -82,10 +124,9 @@ def new_event():
         song_title = request.form['song_name']
         song_artist = request.form['song_artist']
         comment = request.form['song_comment']
-
         songs = mongo.db.music
-        songs.insert({'title': song_title, 'artist': song_artist, 'comment': comment})
-        return redirect('/')
+        songs.insert({'title': song_title, 'artist': song_artist, 'comment': comment, 'lister': session['username']})
+        return redirect(url_for('display_main'))
 
 #11. Update the route method to show the songs in alphabetical order by the name of the song.
 #sort by song title
@@ -94,7 +135,7 @@ def sort_title():
     collection = mongo.db.music
     #db.mycol.find({},{"title":1,_id:0}).sort({"title":-1})
     songsDB=collection.find({}).sort('title', 1 )  #1 means ascending, -1 is descending
-    return render_template('index.html', records=songsDB)
+    return render_template('mainpage.html', records=songsDB)
     #return redirect('/')
 
 #12. Update the route method to show the songs in alphabetical order by the name of the artist.
@@ -148,16 +189,27 @@ def changeSong(song_id):
 
         songs = mongo.db.music
         songs.update_one(myquery, newvalues)
-        return redirect('/')
+        return redirect(url_for('display_main'))
 
 #REMOVE a 
 @app.route('/remove/<song_id>')
 def remove_song(song_id):
     collection = mongo.db.music
     collection.delete_one({'_id': ObjectId(song_id)})
+    return redirect(url_for('display_main'))
+
+# LOGOUT
+@app.route('/logout')
+def logout():
+    session.clear()
     return redirect('/')
 
-
-
-
+# GATED PAGE
+@app.route('/profile/<name>')
+def listings(name):
+    print (name)
+    collection = mongo.db.music
+    songs = collection.find({'lister' : name})
+    print(songs)
+    return render_template('listings.html', songs = songs, lister = name)
 

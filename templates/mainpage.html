@@ -1,0 +1,41 @@
+{% extends "template.html" %}
+{% block title %}Music DB{% endblock %}
+{% block listcontent %}
+<h4>Current Database</h4>
+<!-- Database entries -->
+<ul>
+	{% for record in records %}
+	<li><a href="/find/{{ record._id }}">{{ record.title }}</a> - {{ record.artist }} -
+		{{ record.comment }}
+        {% if record.lister %}
+        (Posted by <a href="/profile/{{ record.lister }}">{{ record.lister }})
+        {% endif %}
+        </li>
+	{% endfor %}
+</ul>
+{% endblock %}
+{% block options %}
+<h4>Some Options</h4>
+<h5>Click on Album Name for more information and to edit</h5>
+<a href="/add">ADD 12 </a>Hardcoded songs<br>
+<a href="/remove">REMOVE ALL</a><br>
+<a href="/sort/title">SORT </a>by name (ascending)<br>
+<form method="post" action="/find/artist">
+	<label for="artist">List the Titles for this Artist:</label>
+	<input type="text" name="artist" value="">
+	<input type="submit" value="Submit">
+                </form>
+	{% endblock %}
+	{% block title2 %}Add a song to the database {% endblock %}
+	{% block content %}
+	<form method="post" action="/song/new">
+		<label for="song_name">Song Title:</label>
+		<input type="text" name="song_name" value="">
+		<label for="song_artist">Artist:</label>
+		<input type="text" name="song_artist" value="">
+		<label for="song_comment">Comment:</label>
+		<input type="text" name="song_comment" value="">
+		<input type="submit" value="Submit">
+            </form>
+		{% endblock %}
+        {% block logout %}<a href='/logout'>Logout</a>{% endblock %}

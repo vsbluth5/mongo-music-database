@@ -1,11 +1,11 @@
 cl{% extends "template.html" %}
-{% block title1 %}Songs by {{theArtist}}{% endblock %}
+{% block title1 %}Songs posted by {{lister}}{% endblock %}
 
 {% block listcontent %}
     <h4>Songs</h4>
         <ul>
-          {% for record in records %}
-            <li>{{ record.title }} </li>
+          {% for song in songs %}
+            <li>{{ song.title }} - {{song.comment}} </li>
           {% endfor %}
       </ul>
 {% endblock %}

@@ -1,0 +1,18 @@
+{% extends "template.html" %}
+{% block title %}Sign In{% endblock %}
+
+{% block options %}
+       
+	{% endblock %}
+
+	{% block title2 %}Sign up  for the database {% endblock %}
+
+{% block content %}
+    <form action="/signup" method="POST">
+        <label for="username">Name</label>
+        <input type="text" name="username">
+        <label for="password">Password</label>
+        <input type="password" name="password">
+        <input type="submit" value="Sign Up">
+    </form>
+	{% endblock %}

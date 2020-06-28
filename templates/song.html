@@ -22,6 +22,8 @@
     </form>
 {% endblock %}
  {% block content %}
-    <a href='/remove/{{ song._id  }}'>REMOVE SONG</a><br>
-    <a href='/'>Go Back</a>
+    <h4><a href='/remove/{{ song._id  }}'>REMOVE SONG</a></h4>
+    <h4><a href='/mainpage'>Go Back</a></h4>
     {% endblock %}
+
+{% block logout %}<a href='/logout'>Logout</a>{% endblock %}
