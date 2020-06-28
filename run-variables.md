@@ -1,11 +1,9 @@
 May need the following installed:
-pip install flask flask-pymongo dnspython bcrypt bson datetime python-dotenv
-If in CS50IDE may need --user flag at end.
+pip3 install flask flask-pymongo dnspython
+If in Cloud Shell may need --user flag at end.
 
 
 export FLASK_APP=main.py
 export FLASK_RUN_HOST=0.0.0.0
 export FLASK_RUN_PORT=8080
 export FLASK_DEBUG=1
-export LC_ALL=C.UTF-8
-export LANG=C.UTF-8

@@ -1,8 +1,16 @@
+# ---- YOUR APP STARTS HERE ----
+# -- Import section --
+
 import os
-from app import app
-from flask import render_template, request, redirect
+from flask import Flask
+from flask import render_template
+from flask import request, redirect
 from flask_pymongo import PyMongo
+
 from bson.objectid import ObjectId
+
+# -- Initialization section --
+app = Flask(__name__)
 
 # name of database
 app.config['MONGO_DBNAME'] = 'firstMusic' 
