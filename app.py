@@ -12,11 +12,11 @@ from bson.objectid import ObjectId
 app = Flask(__name__)
 
 # name of database
-app.config['MONGO_DBNAME'] = 'firstMusic' 
+app.config['MONGO_DBNAME'] = os.getenv("NAME_DB") 
 
 # URI of database for read/write provileges
-app.config['MONGO_URI'] = 'mongodb+srv://person1:pVoEoiSZnPw0omb8@cluster0-vmzkd.mongodb.net/firstMusic?retryWrites=true&w=majority'
-# app.config['MONGO_URI'] = 'mongodb+srv://admin2:uU7p3UTei4BKNneS@cluster0-vmzkd.mongodb.net/firstMusic?retryWrites=true&w=majority'
+app.config['MONGO_URI'] = os.getenv("MONGO_URI")
+
 
 # This is for the session
 #  If using Python 3, use a string
