@@ -5,13 +5,11 @@
  
 {% endblock %}
    
-{% block title2 %}Login to  the database {% endblock %}
+{% block title2 %}{{prompt}} {% endblock %}
 {% block content %}
     <form action="/login" method="POST">
-        <label for="name">Name</label>
-        <input type="text" name="username">
-        <label for="password">Password</label>
-        <input type="password" name="password">
+        <input type="text" name="username" placeholder="Enter userid">
+        <input type="password" name="password" placeholder="Enter password">
         <input type="submit" value="Log In">
     </form>
     No account? <a href="/signup">Sign up.</a>

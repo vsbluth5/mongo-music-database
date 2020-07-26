@@ -20,7 +20,7 @@ app.config['MONGO_URI'] = os.getenv("MONGO_URI")
 
 # This is for the session
 #  If using Python 3, use a string
-app.secret_key = '_5#y2L"F4Q8z\n\xec]/'
+app.secret_key = os.getenv("SESSION")
 
 mongo = PyMongo(app)
 
@@ -34,10 +34,10 @@ def login():
         if request.form['password'] == login_user['password']:
             session['username'] = request.form['username']
             return redirect(url_for('display_main'))
-        return redirect(url_for('gologin'))
-    return render_template('signup.html') 
+        return render_template('login.html', prompt="Id or password do not match")
+    return render_template('signup.html', prompt="There is no account with that name, create new account") 
 
-# SIGN UPM
+# SIGN UP
 @app.route('/signup', methods=['POST', 'GET'])
 def signup():
     if request.method == 'POST':
@@ -48,10 +48,8 @@ def signup():
             users.insert({'name' : request.form['username'], 'password' : request.form['password']})
             session['username'] = request.form['username']
             return redirect(url_for('display_main'))
-
-        return 'That username already exists! Try logging in.'
-
-    return render_template('signup.html')
+        return render_template('signup.html', prompt='That username already exists! Try again.')
+    return render_template('signup.html', prompt='You need to sign up for an account')
 
 # INDEX
 @app.route('/')
@@ -65,7 +63,7 @@ def index():
 # GO TO LOGIN
 @app.route('/gologin')
 def go_to_login():
-    return render_template('login.html')
+    return render_template('login.html', prompt="Login here")
 
 # DISPLAY MAINPAGE
 @app.route('/mainpage')
@@ -96,10 +94,9 @@ def add():
         { "title": "Viola", "artist": "Mumford and Sons", "comment": "mellow"}
         ]
         
-    #x = songs.insert_many(mylist)
     collection.insert_many(mylist)
-    #songsDB = collection.find({})
-    print(collection.count_documents({}))    #how to get count of documents (records)
+    # songsDB = collection.find({})
+    # print(collection.count_documents({}))    #how to get count of documents (records)
     return redirect(url_for('display_main'))
 
 #remove all
@@ -108,8 +105,7 @@ def emptyDatabase():
     # define a variable for the collection you want to connect to
     songs = mongo.db.music
     songs.remove({})
-    #songsDB = songs.find({})
-    print(songs.count_documents({}))    #how to get count of documents (records)
+    # print(songs.count_documents({}))    #how to get count of documents (records)
     return redirect(url_for('display_main'))
 
 # ADVANCED: A FORM TO COLLECT USER-SUBMITTED SONGS
