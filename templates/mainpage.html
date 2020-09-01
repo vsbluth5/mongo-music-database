@@ -5,12 +5,20 @@
 <!-- Database entries -->
 <ul>
 	{% for record in records %}
-	<li><a href="/find/{{ record._id }}">{{ record.title }}</a> - {{ record.artist }} -
-		{{ record.comment }}
-        {% if record.lister %}
+	<!-- <li><a href="/find/{{ record._id }}">{{ record.title }}</a> - {{ record.artist }} - -->
+		{% for comm in record.comment %}
+            {% if comm == "a" %}
+
+                    <li> {{ record.title }} - {{record.comment}} </li>
+            
+                    {% endif %}
+
+        <!-- {% if record.lister %}
         (Posted by <a href="/profile/{{ record.lister }}">{{ record.lister }})
-        {% endif %}
-        </li>
+        {% endif %} -->
+            <!-- </li> -->
+            
+        {% endfor %}        
 	{% endfor %}
 </ul>
 {% endblock %}

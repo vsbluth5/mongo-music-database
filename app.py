@@ -57,6 +57,7 @@ def signup():
 def index():
     collection = mongo.db.music
     songsDB = collection.find({})
+    print(songsDB)
     print(collection.count_documents({}))    #how to get count of documents (records)
     return render_template("index.html", records=songsDB)
 
@@ -78,20 +79,19 @@ def display_main():
 def add():
     # define a variable for the collection you want to connect to
     collection = mongo.db.music
-    #collection.insert({"song":"Row, Row, Row Your Boat"})mydb = myclient["mydatabase"]
     mylist = [
-        { "title": "Amy", "artist": "Coldplay", "comment": "provilegesretty"},
-        { "title": "Hannah", "artist": "Mumford and Sons", "comment": "soothing"},
-        { "title": "Michael", "artist": "Mumford and Sons", "comment": "happy"},
-        { "title": "Sandy", "artist": "Coldplay", "comment": "mellow"},
-        { "title": "Betty", "artist": "Blue October", "comment": "pretty"},
-        { "title": "Richard", "artist": "Blue October", "comment": "happy"},
-        { "title": "Susan", "artist": "Coldplay", "comment": "happy"},
-        { "title": "Vicky", "artist": "Blue October", "comment": "soothing"},
-        { "title": "Ben", "artist": "Elton John", "comment": "fave"},
-        { "title": "William", "artist": "Elton John", "comment": "happy"},
-        { "title": "Chuck", "artist": "Mumford and Sons", "comment": "pretty"},
-        { "title": "Viola", "artist": "Mumford and Sons", "comment": "mellow"}
+        { "title": "Amy", "artist": "Coldplay", "comment": ["a", "b", "c"]},
+        { "title": "Hannah", "artist": "Mumford and Sons", "comment": ["a", "c"]},
+        { "title": "Michael", "artist": "Mumford and Sons", "comment":["a"]},
+        { "title": "Sandy", "artist": "Coldplay", "comment": ["b", "c"]},
+        { "title": "Betty", "artist": "Blue October", "comment": [ "c"]},
+        { "title": "Richard", "artist": "Blue October", "comment": ["a", "b", "c"]},
+        { "title": "Susan", "artist": "Coldplay", "comment": [ "b", "c"]},
+        { "title": "Vicky", "artist": "Blue October", "comment": []},
+        { "title": "Ben", "artist": "Elton John", "comment": []},
+        { "title": "William", "artist": "Elton John", "comment": []},
+        { "title": "Chuck", "artist": "Mumford and Sons", "comment":[]},
+        { "title": "Viola", "artist": "Mumford and Sons", "comment": ["a", "b", "c"]}
         ]
         
     collection.insert_many(mylist)
